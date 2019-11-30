@@ -5,14 +5,8 @@ import sys
 import os
 import flask
 import time
-import rq
-from rq import Queue
-from rq.job import Job
-from worker import conn
 import random
 from flask import render_template
-
-q = Queue(connection=conn)
 
 # @app.route("/UploadSet",methods=["POST"])
 # def UploadSet():
@@ -40,15 +34,15 @@ q = Queue(connection=conn)
 #     return flask.redirect('/admin')
 
 
-@app.route("/fetching_sets")
-def fetching_sets():
-    data={"success":False}
-    data={"sets":''}
-    status = False
-    sets = fetch_unuploaded_sets(status)
-    data['sets']=sets
-    data['success'] = True
-    return flask.jsonify(data)
+# @app.route("/fetching_sets")
+# def fetching_sets():
+#     data={"success":False}
+#     data={"sets":''}
+#     status = False
+#     sets = fetch_unuploaded_sets(status)
+#     data['sets']=sets
+#     data['success'] = True
+#     return flask.jsonify(data)
 
 
 # @app.route('/admin')
