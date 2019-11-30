@@ -34,15 +34,20 @@ from flask import render_template
 #     return flask.redirect('/admin')
 
 
-# @app.route("/fetching_sets")
-# def fetching_sets():
-#     data={"success":False}
-#     data={"sets":''}
-#     status = False
-#     sets = fetch_unuploaded_sets(status)
-#     data['sets']=sets
-#     data['success'] = True
-#     return flask.jsonify(data)
+@app.route("/fetchingImage", methods=["POST"])
+def fetchingImage():
+    flask_requests = flask.request.form.to_dict(flat=False)
+    if flask.request.method == 'POST':
+        print(flask_requests)
+        server_name = flask_requests['serverName'][0]
+        image = 
+        data={"success":False}
+        data={"sets":''}
+        status = False
+        sets = fetch_unuploaded_sets(status)
+        data['sets']=sets
+        data['success'] = True
+        return flask.jsonify(data)
 
 
 @app.route('/testing')
