@@ -45,27 +45,6 @@ from flask import render_template
 #     return flask.jsonify(data)
 
 
-# @app.route('/admin')
-# def admin():
-#     uploaded_sets = fetch_unuploaded_sets(status = True)
-#     unuploaded_sets = fetch_unuploaded_sets(status = False)
-#     if len(uploaded_sets) > len(unuploaded_sets):
-#         bigSet = 0
-#     else:
-#         bigSet = 1
-#     return render_template('upload.html', sets = [uploaded_sets, unuploaded_sets, bigSet])
-
-
 @app.route('/testing')
 def testing():
-    # flask_requests = flask.request.form.to_dict(flat=False) 
-    # if flask.request.method == 'POST':
-    #     step_name = flask_requests['step_name'][0]
-    #     set_ids = flask_requests['set_ids']
-    #     data = {
-    #         "Step Name": step_name,
-    #         "Set Ids": set_ids
-    #     }
-
-    #     print(data)
-    return "<h1>Hello world</h1>"
+    return render_template('home.html')
