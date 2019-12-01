@@ -1,3 +1,8 @@
 *.vscode
 *.pyc
 __pycache__
+*.jpg
+*.png
+*.jpeg
+*.hd5
+*.h5
