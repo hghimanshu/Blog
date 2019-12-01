@@ -3,8 +3,6 @@ import json
 import sys
 # sys.path.append('/home/techject/Abhishek/C3-python/')
 import os
-import urllib
-import numpy as np
 from werkzeug import secure_filename
 import flask
 import time
