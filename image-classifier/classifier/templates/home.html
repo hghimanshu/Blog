@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
+  <title>Image Classifier</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -62,8 +62,8 @@
       <p>This is a simple application which classifies the given image.</p>
       <br><br>
       <form action="http://localhost:8000/fetchingImage" method = "POST" enctype = "multipart/form-data">
-        <input type="file" name="image" accept="image/*" ><br/> <br />
-        <button type="submit" class="btn btn-info">Submit</button>
+        <input type="file" name="image" accept="image/*" required><br/> <br />
+        <button type="submit" class="btn btn-info btn-lg">Predict</button>
       </form> 
       
     </div>
