@@ -3,8 +3,12 @@ import json
 import sys
 # sys.path.append('/home/techject/Abhishek/C3-python/')
 import os
+import urllib
+import numpy as np
+from werkzeug import secure_filename
 import flask
 import time
+import cv2
 import random
 from flask import render_template
 
@@ -34,20 +38,20 @@ from flask import render_template
 #     return flask.redirect('/admin')
 
 
-@app.route("/fetchingImage", methods=["POST"])
+@app.route("/fetchingImage", methods = ['GET', 'POST'])
 def fetchingImage():
     flask_requests = flask.request.form.to_dict(flat=False)
     if flask.request.method == 'POST':
         print(flask_requests)
-        server_name = flask_requests['serverName'][0]
-        image = 
-        data={"success":False}
-        data={"sets":''}
-        status = False
-        sets = fetch_unuploaded_sets(status)
-        data['sets']=sets
-        data['success'] = True
-        return flask.jsonify(data)
+        image = flask_requests['image'][0]
+        image.save(secure_filename(image.filename))
+        # req = urllib.request.urlopen(image)
+        # arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
+        # print(image)
+        # img = cv2.imdecode(arr, -1)
+        # print(img)
+        # data = {"Image" : img}
+        return 'file uploaded successfully'
 
 
 @app.route('/testing')
