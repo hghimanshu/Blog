@@ -10,6 +10,8 @@ import flask
 import time
 import cv2
 import random
+import keras
+import tensorflow as tf
 from flask import render_template
 from classifier.backend.prediction import image_prediction
 
@@ -17,12 +19,13 @@ from classifier.backend.prediction import image_prediction
 @app.route("/fetchingImage", methods = ['POST'])
 def fetchingImage():
     if flask.request.method == 'POST':
+        keras.backend.clear_session()
         image = flask.request.files['image']
         image.save(app.config['UPLOAD_FOLDER'] + secure_filename(image.filename))
-        img = cv2.imread(app.config['UPLOAD_FOLDER'] + image.filename)
-        image_prediction(image)
-
-        return "Success!!"
+        full_img = app.config['UPLOAD_FOLDER'] + image.filename
+        prediction, conf = image_prediction(full_img)
+        data = {"Class": prediction, "Confidence": conf}
+        return data
 
 
 @app.route('/testing')
