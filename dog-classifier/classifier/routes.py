@@ -44,14 +44,10 @@ def fetchingImage():
         image = flask.request.files['image']
         print(app.config['UPLOAD_FOLDER'])
         image.save(app.config['UPLOAD_FOLDER'] + secure_filename(image.filename))
-        print(app)
-        # req = urllib.request.urlopen(image)
-        # arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
-        # print(image)
-        # img = cv2.imdecode(arr, -1)
-        # print(img)
-        # data = {"Image" : img}
-        return 'file uploaded successfully'
+        img = cv2.imread(app.config['UPLOAD_FOLDER'] + image.filename)
+        print(img)
+        data = {"Image" : img}
+        return data
 
 
 @app.route('/testing')
