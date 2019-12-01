@@ -23,11 +23,12 @@ def fetchingImage():
         image = flask.request.files['image']
         image.save(app.config['UPLOAD_FOLDER'] + secure_filename(image.filename))
         full_img = app.config['UPLOAD_FOLDER'] + image.filename
-        prediction, conf = image_prediction(full_img)
-        data = {"Class": prediction, "Confidence": conf}
-        return data
+        data = image_prediction(full_img)
+        if len(data)==2:
+            return render_template('prediction.html', results = data)
+        else:
+            return render_template('error.html', results = data)
 
-
-@app.route('/testing')
-def testing():
+@app.route('/home')
+def home():
     return render_template('home.html')
