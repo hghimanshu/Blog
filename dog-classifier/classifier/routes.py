@@ -38,13 +38,13 @@ from flask import render_template
 #     return flask.redirect('/admin')
 
 
-@app.route("/fetchingImage", methods = ['GET', 'POST'])
+@app.route("/fetchingImage", methods = ['POST'])
 def fetchingImage():
-    flask_requests = flask.request.form.to_dict(flat=False)
     if flask.request.method == 'POST':
-        print(flask_requests)
-        image = flask_requests['image'][0]
-        image.save(secure_filename(image.filename))
+        image = flask.request.files['image']
+        print(app.config['UPLOAD_FOLDER'])
+        image.save(app.config['UPLOAD_FOLDER'] + secure_filename(image.filename))
+        print(app)
         # req = urllib.request.urlopen(image)
         # arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
         # print(image)
