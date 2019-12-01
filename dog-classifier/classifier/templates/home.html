@@ -59,11 +59,11 @@
       <h4><small>Image Classifier</small></h4>
       <hr>
       <h2>A Simple Image Classifier</h2>
-      <p>Food is my passion. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      <p>This is a simple application which classifies the given image.</p>
       <br><br>
-      <form action="/action_page.php">
-        <input type="file" name="pic" accept="image/*">
-        <input type="submit">
+      <form action="http://localhost:8000/fetchingImage" method = "POST" enctype = "multipart/form-data">
+        <input type="file" name="image" accept="image/*" ><br/> <br />
+        <button type="submit" class="btn btn-info">Submit</button>
       </form> 
       
     </div>
