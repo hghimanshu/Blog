@@ -1,5 +1,6 @@
 import sys
-from searchapp.mongodb.mongo import fetchData, insertData, groupingData
+from searchapp.mongodb.mongo import (fetchData, insertData, 
+                                    groupingData, updateData)
 
 COLL = "Image-Data"
 
@@ -33,3 +34,9 @@ def getRequiredImages(label):
         for i in res:
             totalImages.append(i['image_path'])
     return totalImages
+
+def updateLabel(image_path, curr_label, new_label):
+    curr_label_q = {"label": curr_label}
+    new_label_q = {"$set": {"label": new_label}}
+
+    updateData(curr_label_q, new_label_q)
