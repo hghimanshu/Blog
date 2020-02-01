@@ -31,3 +31,26 @@ class settingupDb:
         self.results = coll.delete_many(query)
         print(self.results.deleted_count, " documents deleted.") 
         return self.results
+
+def insert_data(query, collection):
+    c_db = settingupDb(query, collection)
+    coll = c_db.constructDb()
+    c_db.insertsToDb(DB, coll, query)
+
+def fetchData(collection, query):
+    c_db = settingupDb(query, collection)
+    coll = c_db.constructDb()
+    res = c_db.fetchInfo(DB, coll, query)
+    return res
+
+
+def update_info(query, newVal, collection):
+    c_db = settingupDb(query, collection)
+    coll = c_db.constructDb()
+    c_db.updatesInfo(DB, coll, query, newVal)
+
+def deleteData(collection, query):
+    c_db = settingupDb(query, collection)
+    coll = c_db.constructDb()
+    res = c_db.deleteInfo(DB, coll, query)
+    return res
