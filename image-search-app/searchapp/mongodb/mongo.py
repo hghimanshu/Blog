@@ -32,7 +32,7 @@ class settingupDb:
         print(self.results.deleted_count, " documents deleted.") 
         return self.results
 
-def insert_data(query, collection):
+def insertData(query, collection):
     c_db = settingupDb(query, collection)
     coll = c_db.constructDb()
     c_db.insertsToDb(DB, coll, query)
