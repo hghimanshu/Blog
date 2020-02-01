@@ -26,3 +26,8 @@ class settingupDb:
     def fetchInfo(self, db, coll, query):
         self.results = coll.find(query)
         return self.results
+
+    def deleteInfo(self, db, coll, query):
+        self.results = coll.delete_many(query)
+        print(self.results.deleted_count, " documents deleted.") 
+        return self.results
