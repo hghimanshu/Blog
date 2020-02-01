@@ -8,19 +8,21 @@ class settingupDb:
     def __init__(self, query, coll_name):
         self.query = query
         self.coll_name = coll_name
-    def construct_Db(self):
+
+    def constructDb(self):
         self.coll = DB[self.coll_name]
         return self.coll
 
+    def insertsToDb(self,db,coll,query):
+        self.post_id = coll.insert(self.query, check_keys=False)
+        print('Data inserted for Object ID:: ',self.post_id)
 
+    def updatesInfo(self, db, coll, query, newVal):
+        self.query = query
+        self.newVal = newVal
+        self.updatedColl = coll.update_many(self.query, self.newVal)
+        print(self.updatedColl.modified_count,'Documents updated !!')
 
-
-
-def push_into_db(self,db,coll,query):
-    self.post_id = coll.insert(self.query, check_keys=False)
-    print('Data inserted for Object ID:: ',self.post_id)
-def updates_info(self, db, coll, query, newVal):
-    self.query = query
-    self.newVal = newVal
-    self.updatedColl = coll.update_many(self.query, self.newVal)
-    print(self.updatedColl.modified_count,'Documents updated !!')
+    def fetchInfo(self, db, coll, query):
+        self.results = coll.find(query)
+        return self.results
