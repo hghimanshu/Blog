@@ -43,11 +43,11 @@ def home():
         '''
         Query has return something
         '''
-        pass
-    else:
-        ## it is empty in the db
-        pass
-    return render_template('home.html')
+        for r in allImages:
+            label = r['label']
+            images = r['image_path']
+            data[label] = images
+    return render_template('home.html', results=data)
 
 
 @app.route('/fetchImages', methods=['GET'])
