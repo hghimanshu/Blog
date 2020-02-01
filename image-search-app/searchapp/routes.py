@@ -72,11 +72,3 @@ def updateLabel():
         new_value = flask.request.form['new_label']
 
         ## display a flag that the label is changed
-@app.route('/updateLabel', methods=['POST'])
-def updateLabel():
-    if flask.request.method == 'POST':
-        label = flask.request.form['image']
-        curr_value = flask.request.form['current_label']
-        new_value = flask.request.form['new_label']
-
-        ## display a flag that the label is changed
