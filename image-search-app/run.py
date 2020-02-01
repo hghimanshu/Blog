@@ -1,5 +1,5 @@
-from classifier import app as  application
-from classifier import config
+from searchapp import app as  application
+from searchapp import config
 
 application.config.from_object(config)    
 application.config.from_pyfile('config/config.py')
