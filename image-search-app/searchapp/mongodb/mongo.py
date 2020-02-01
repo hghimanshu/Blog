@@ -1,7 +1,7 @@
 import pymongo
 from pymongo import MongoClient
 import sys
-from searchapp.config.settings import MONGO_DB_NAME, MONGO_DB_URL, DB
+from searchapp.config.settings import DB
 
 
 class settingupDb:
