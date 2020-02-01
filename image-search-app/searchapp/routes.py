@@ -1,4 +1,4 @@
-from classifier import app
+from searchapp import app
 import json
 import sys
 # sys.path.append('/home/techject/Abhishek/C3-python/')
@@ -11,22 +11,72 @@ import random
 import keras
 import tensorflow as tf
 from flask import render_template
-from classifier.backend.prediction import image_prediction
+from searchapp.backend.handle_requests import (isLabelInDb, 
+                                            getRequiredImages, getAllImages)
 
 
-@app.route("/fetchingImage", methods = ['POST'])
-def fetchingImage():
+@app.route("/createLabels", methods = ['POST'])
+def createLabels():
     if flask.request.method == 'POST':
-        keras.backend.clear_session()
         image = flask.request.files['image']
+        label = flask.request.form['label']
         image.save(app.config['UPLOAD_FOLDER'] + secure_filename(image.filename))
-        full_img = app.config['UPLOAD_FOLDER'] + image.filename
-        data = image_prediction(full_img)
-        if len(data)==2:
-            return render_template('prediction.html', results = data)
+        full_path = app.config['UPLOAD_FOLDER'] + image.filename
+
+        alreadyPresent = isLabelInDb(label, full_path)            
+        
+        if alreadyPresent:
+            '''
+            Render the message that the label is already present. Try it with other label
+            '''
         else:
-            return render_template('error.html', results = data)
+            '''
+            Render the message for successfully insertion of the image and label to db
+            '''
+            return render_template('prediction.html', results = data)
 
 @app.route('/home')
 def home():
+    allImages = getAllImages()
+    data = {}
+    if len(list(allImages._CommandCursor__data)) != 0:
+        '''
+        Query has return something
+        '''
+        pass
+    else:
+        ## it is empty in the db
+        pass
     return render_template('home.html')
+
+
+@app.route('/fetchImages', methods=['GET'])
+def fetchImages():
+    if flask.request.method == 'GET':
+        label = flask.request.form['label']
+        totalImages = getRequiredImages(label)
+
+        if len(totalImages) == 0:
+            ## Return a message that no image is there for the given label
+            pass
+        else:
+            ## Display the images
+            pass        
+        return "sds"
+
+@app.route('/updateLabel', methods=['POST'])
+def updateLabel():
+    if flask.request.method == 'POST':
+        label = flask.request.form['image']
+        curr_value = flask.request.form['current_label']
+        new_value = flask.request.form['new_label']
+
+        ## display a flag that the label is changed
+@app.route('/updateLabel', methods=['POST'])
+def updateLabel():
+    if flask.request.method == 'POST':
+        label = flask.request.form['image']
+        curr_value = flask.request.form['current_label']
+        new_value = flask.request.form['new_label']
+
+        ## display a flag that the label is changed

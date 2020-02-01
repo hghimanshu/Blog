@@ -31,8 +31,13 @@ class settingupDb:
         self.results = coll.delete_many(query)
         print(self.results.deleted_count, " documents deleted.") 
         return self.results
+    
+    def aggregateQuery(self, db, coll, query_in_list):
+        self.results = coll.aggregate(query_in_list)
+        return self.results
 
-def insert_data(query, collection):
+
+def insertData(query, collection):
     c_db = settingupDb(query, collection)
     coll = c_db.constructDb()
     c_db.insertsToDb(DB, coll, query)
@@ -43,8 +48,13 @@ def fetchData(collection, query):
     res = c_db.fetchInfo(DB, coll, query)
     return res
 
+def groupingData(collection, query):
+    c_db = settingupDb(query, collection)
+    coll = c_db.constructDb()
+    res = c_db.fetchInfo(DB, coll, query)
+    return res
 
-def update_info(query, newVal, collection):
+def updateData(query, newVal, collection):
     c_db = settingupDb(query, collection)
     coll = c_db.constructDb()
     c_db.updatesInfo(DB, coll, query, newVal)
