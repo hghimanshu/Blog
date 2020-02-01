@@ -11,7 +11,9 @@ import random
 import keras
 import tensorflow as tf
 from flask import render_template
-from searchapp.backend.handle_requests import isLabelInDb
+from searchapp.backend.handle_requests import (isLabelInDb, 
+                                            getRequiredImages, getAllImages)
+
 
 @app.route("/createLabels", methods = ['POST'])
 def createLabels():
@@ -35,11 +37,38 @@ def createLabels():
 
 @app.route('/home')
 def home():
+    allImages = getAllImages()
+    data = {}
+    if len(list(allImages._CommandCursor__data)) != 0:
+        '''
+        Query has return something
+        '''
+        pass
+    else:
+        ## it is empty in the db
+        pass
     return render_template('home.html')
 
 
 @app.route('/fetchImages', methods=['GET'])
 def fetchImages():
-    if flask.request.method == 'POST':
+    if flask.request.method == 'GET':
         label = flask.request.form['label']
-        
+        totalImages = getRequiredImages(label)
+
+        if len(totalImages) == 0:
+            ## Return a message that no image is there for the given label
+            pass
+        else:
+            ## Display the images
+            pass        
+        return "sds"
+
+@app.route('/updateLabel', methods=['POST'])
+def updateLabel():
+    if flask.request.method == 'POST':
+        label = flask.request.form['image']
+        curr_value = flask.request.form['current_label']
+        new_value = flask.request.form['new_label']
+
+        ## display a flag that the label is changed
