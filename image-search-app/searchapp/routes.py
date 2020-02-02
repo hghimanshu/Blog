@@ -10,7 +10,8 @@ import cv2
 import random
 from flask import render_template, url_for
 from searchapp.backend.handle_requests import (isLabelInDb, 
-                                            getRequiredImages, getAllImages)
+                                            getRequiredImages, getAllImages,
+                                            updateInfo)
 
 
 @app.route("/createLabels", methods=['GET', 'POST'])
@@ -44,25 +45,28 @@ def home():
     return render_template('home.html', results=data)
 
 
-@app.route('/fetchImages', methods=['GET'])
+@app.route('/fetchImages', methods=['POST'])
 def fetchImages():
-    if flask.request.method == 'GET':
+    if flask.request.method == 'POST':
         label = flask.request.form['label']
         totalImages = getRequiredImages(label)
-
         if len(totalImages) == 0:
-            ## Return a message that no image is there for the given label
-            pass
+            message = "No image is present in the database with the label " + str(label)
+            return render_template('error.html', message = message)
         else:
-            ## Display the images
-            pass        
-        return "sds"
+            data = [totalImages, label]
+            return render_template('show_images.html', results=data)
+
 
 @app.route('/updateLabel', methods=['POST'])
 def updateLabel():
     if flask.request.method == 'POST':
-        label = flask.request.form['image']
+        print(flask.request.form)
+        image = flask.request.form['image']
         curr_value = flask.request.form['current_label']
         new_value = flask.request.form['new_label']
 
-        ## display a flag that the label is changed
+        updateInfo(image, curr_value, new_value)
+        message = "Label is updated !!"
+
+        return render_template('success.html', message=message)
