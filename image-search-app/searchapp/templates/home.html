@@ -62,7 +62,13 @@
     {% for label in results.keys() %}
     <div class="col-sm-4">
       <div class="panel panel-primary">
-          <div class="panel-heading"><center>{{label}}</center></div>
+          <div class="panel-heading">
+            <center>
+              <form action="http://localhost:8000/fetchImages" method="POST" >
+                <button class="btn btn-danger" type="submit" name="label" value="{{  label  }}"> {{ label }}</button>
+              </form>
+            </center>
+          </div>
           <div class="panel-body"><img src=" {{ results[label][0] }}" class="img-responsive" style="width:100%" alt="Image"></div>
       </div>
     </div>
