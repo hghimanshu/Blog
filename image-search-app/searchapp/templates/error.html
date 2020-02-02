@@ -6,6 +6,9 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
 <div class="container-fluid">
-    <h2>Message :: <b>{{ results }}</b></h2><br/><br/>
-    <a href="http://localhost:8000/home"><button type="reset" class="btn btn-warning btn-lg">Another Image ?</button></a>
+    <div class="alert alert-danger">
+        <strong>Error!</strong> {{ message}}
+      </div>
+      <a href="http://localhost:8000/createLabels"><button type="reset" class="btn btn-warning btn-lg">Try another label</button></a>
+      <a href="http://localhost:8000/home"><button type="reset" class="btn btn-warning btn-lg">Go to Home ?</button></a>
 </div>
