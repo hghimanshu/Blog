@@ -33,10 +33,12 @@ def getRequiredImages(label):
 
     if res.count() != 0:
         for i in res:
-            totalImages.append(i['image_path'])
+            image_name = i['image_path']
+            # image_name = i['image_path'].split('/')[-1]
+            totalImages.append(image_name)
     return totalImages
 
-def updateLabel(image_path, curr_label, new_label):
+def updateInfo(image_path, curr_label, new_label):
     curr_label_q = {"label": curr_label}
     new_label_q = {"$set": {"label": new_label}}
 
