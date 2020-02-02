@@ -36,14 +36,10 @@ def createLabels():
 @app.route('/home')
 def home():
     allImages = getAllImages()
-    print("here")
     data = {}
     if len(list(allImages._CommandCursor__data)) != 0:
-        '''
-        Query has return something
-        '''
         for r in allImages:
-            label = r['label']
+            label = r['_id']
             images = r['image_path']
             data[label] = images
     return render_template('home.html', results=data)
