@@ -62,7 +62,7 @@
     {% for label in results.keys() %}
     <div class="col-sm-4">
       <div class="panel panel-primary">
-          <div class="panel-heading">label</div>
+          <div class="panel-heading"><center>{{label}}</center></div>
           <div class="panel-body"><img src=" {{ results[label][0]}}" class="img-responsive" style="width:100%" alt="Image"></div>
       </div>
     </div>
@@ -73,8 +73,8 @@
 
 <footer class="container-fluid text-center">
   <p>Want to create your own labels</p>  
-  <form class="form-inline" action="http://localhost:8000/createLabels" method = "GET">
-    <button type="button" class="btn btn-danger">Cick Me</button>
+  <form class="form-inline" method = "GET">
+    <a href="http://localhost:8000/createLabels"><button type="button" class="btn btn-danger">Click Me</button></a>
   </form>
 </footer>
 
