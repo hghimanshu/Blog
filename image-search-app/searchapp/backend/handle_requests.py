@@ -12,7 +12,8 @@ def isLabelInDb(label, image_path):
         ## means the given label is not in the db
         ## so create the label
         insert_q = {"label": label, "image_path": image_path}
-        insertData(COLL, insert_q)
+        insertData(insert_q, COLL)
+        
     else:
         alreadyPresent = True
     return alreadyPresent
