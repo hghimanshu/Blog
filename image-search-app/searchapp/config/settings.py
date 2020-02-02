@@ -1,7 +1,7 @@
 import pymongo
 from pymongo import MongoClient
 
-ENV = "Production"
+ENV = "test"
 
 if ENV.lower() == "production":
 
