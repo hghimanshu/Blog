@@ -51,7 +51,7 @@ def fetchData(collection, query):
 def groupingData(collection, query):
     c_db = settingupDb(query, collection)
     coll = c_db.constructDb()
-    res = c_db.fetchInfo(DB, coll, query)
+    res = c_db.aggregateQuery(DB, coll, query)
     return res
 
 def updateData(query, newVal, collection):
