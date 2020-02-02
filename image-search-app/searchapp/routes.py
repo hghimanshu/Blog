@@ -8,8 +8,6 @@ import flask
 import time
 import cv2
 import random
-import keras
-import tensorflow as tf
 from flask import render_template
 from searchapp.backend.handle_requests import (isLabelInDb, 
                                             getRequiredImages, getAllImages)
@@ -38,6 +36,7 @@ def createLabels():
 @app.route('/home')
 def home():
     allImages = getAllImages()
+    print("here")
     data = {}
     if len(list(allImages._CommandCursor__data)) != 0:
         '''
