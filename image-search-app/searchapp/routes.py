@@ -8,7 +8,7 @@ import flask
 import time
 import cv2
 import random
-from flask import render_template
+from flask import render_template, url_for
 from searchapp.backend.handle_requests import (isLabelInDb, 
                                             getRequiredImages, getAllImages)
 
