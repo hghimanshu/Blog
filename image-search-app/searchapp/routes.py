@@ -21,19 +21,15 @@ def createLabels():
         image.save(app.config['UPLOAD_FOLDER'] + secure_filename(image.filename))
         full_path = app.config['UPLOAD_FOLDER'] + image.filename
 
-        alreadyPresent = isLabelInDb(label, full_path)            
+        alreadyPresent = isLabelInDb(label, full_path)   
+        print(alreadyPresent)         
         
         if alreadyPresent:
-            '''
-            Render the message that the label is already present. Try it with other label
-            '''
-            pass
+            message = "The label is already in the database. Try with other label"
+            return render_template('error.html', message = message)
         else:
-            '''
-            Render the message for successfully insertion of the image and label to db
-            '''
-            pass
-            return render_template('prediction.html', results = data)
+            message = "The label is successfully inserted to the database"
+            return render_template('success.html', message = message)
     else:
         return render_template('createLabels.html')
 
