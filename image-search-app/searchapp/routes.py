@@ -13,7 +13,7 @@ from searchapp.backend.handle_requests import (isLabelInDb,
                                             getRequiredImages, getAllImages)
 
 
-@app.route("/createLabels", methods = ['POST'])
+@app.route("/createLabels", methods=['GET', 'POST'])
 def createLabels():
     if flask.request.method == 'POST':
         image = flask.request.files['image']
@@ -27,11 +27,15 @@ def createLabels():
             '''
             Render the message that the label is already present. Try it with other label
             '''
+            pass
         else:
             '''
             Render the message for successfully insertion of the image and label to db
             '''
+            pass
             return render_template('prediction.html', results = data)
+    else:
+        return render_template('createLabels.html')
 
 @app.route('/home')
 def home():
