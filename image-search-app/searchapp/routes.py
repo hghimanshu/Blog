@@ -22,7 +22,6 @@ def createLabels():
         full_path = app.config['UPLOAD_FOLDER'] + image.filename
 
         alreadyPresent = isLabelInDb(label, full_path)   
-        print(alreadyPresent)         
         
         if alreadyPresent:
             message = "The label is already in the database. Try with other label"
