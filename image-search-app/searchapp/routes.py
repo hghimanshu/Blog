@@ -14,7 +14,7 @@ from searchapp.backend.handle_requests import (isLabelInDb,
                                             updateInfo)
 
 
-STATIC_FOLDER = os.path.dirname(os.path.abspath(__file__))
+STATIC_FOLDER = os.path.dirname(os.path.abspath(__file__)) + '/static/'
 
 
 @app.route("/createLabels", methods=['GET', 'POST'])
@@ -64,7 +64,6 @@ def fetchImages():
 @app.route('/updateLabel', methods=['POST'])
 def updateLabel():
     if flask.request.method == 'POST':
-        print(flask.request.form)
         image = flask.request.form['image']
         curr_value = flask.request.form['current_label']
         new_value = flask.request.form['new_label']
