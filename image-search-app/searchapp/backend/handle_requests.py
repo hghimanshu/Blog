@@ -42,4 +42,4 @@ def updateInfo(image_path, curr_label, new_label):
     curr_label_q = {"label": curr_label}
     new_label_q = {"$set": {"label": new_label}}
 
-    updateData(curr_label_q, new_label_q)
+    updateData(curr_label_q, new_label_q, COLL)
