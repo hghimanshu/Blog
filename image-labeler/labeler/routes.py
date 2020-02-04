@@ -1,13 +1,8 @@
 from labeler import app
 import json
-import sys
-# sys.path.append('/home/techject/Abhishek/C3-python/')
 import os
 from werkzeug import secure_filename
 import flask
-import time
-import cv2
-import random
 from flask import render_template 
 from labeler.backend.handle_requests import (isLabelInDb, 
                                             getRequiredImages, getAllImages,
@@ -23,8 +18,7 @@ def createLabels():
         image = flask.request.files['image']
         label = flask.request.form['label']
         image.save(STATIC_FOLDER + secure_filename(image.filename))
-        full_path = STATIC_FOLDER + image.filename
-
+        
         alreadyPresent = isLabelInDb(label, image.filename)   
         
         if alreadyPresent:

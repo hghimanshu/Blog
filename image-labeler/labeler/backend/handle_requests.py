@@ -1,4 +1,3 @@
-import sys
 from labeler.mongodb.mongo import (fetchData, insertData, 
                                     groupingData, updateData)
 
@@ -9,8 +8,6 @@ def isLabelInDb(label, image_path):
     res = fetchData(COLL, query)
     alreadyPresent = False
     if res.count() == 0:
-        ## means the given label is not in the db
-        ## so create the label
         insert_q = {"label": label, "image_path": image_path}
         insertData(insert_q, COLL)
         
