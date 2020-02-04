@@ -1,7 +1,7 @@
 import pymongo
 from pymongo import MongoClient
 import sys
-from searchapp.config.settings import DB
+from labeler.config.settings import DB
 
 
 class settingupDb:

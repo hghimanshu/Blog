@@ -1,5 +1,5 @@
-from searchapp import app as  application
-from searchapp import config
+from labeler import app as  application
+from labeler import config
 
 application.config.from_object(config)    
 application.config.from_pyfile('config/config.py')

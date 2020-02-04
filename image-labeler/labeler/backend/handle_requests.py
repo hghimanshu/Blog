@@ -1,5 +1,5 @@
 import sys
-from searchapp.mongodb.mongo import (fetchData, insertData, 
+from labeler.mongodb.mongo import (fetchData, insertData, 
                                     groupingData, updateData)
 
 COLL = "Image-Data"

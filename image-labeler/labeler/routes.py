@@ -1,4 +1,4 @@
-from searchapp import app
+from labeler import app
 import json
 import sys
 # sys.path.append('/home/techject/Abhishek/C3-python/')
@@ -9,7 +9,7 @@ import time
 import cv2
 import random
 from flask import render_template 
-from searchapp.backend.handle_requests import (isLabelInDb, 
+from labeler.backend.handle_requests import (isLabelInDb, 
                                             getRequiredImages, getAllImages,
                                             updateInfo)
 
