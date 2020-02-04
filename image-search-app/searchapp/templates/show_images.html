@@ -11,18 +11,22 @@
 <body>
     <div class="container">    
         <div class="row">
-          {% for img in results[0] %}
+          <br/><br/>
+          <div class="alert alert-info">
+            <b><center> {{ results[1]}} </center> </b>
+          </div>
+          <br/><br/>
           <div class="col-sm-4">
             <div class="panel panel-primary">
-                <div class="panel-body"><img src=" {{ url_for('static', filename=img) }}" class="img-responsive" style="width:100%" alt="Image"></div>
+                <div class="panel-body"><img src=" {{ url_for('static', filename= results[0] ) }}" class="img-responsive" style="width:100%" alt="Image"></div>
             </div>
-            <p> Is the image is of wrong label ?</p>
+            <p> Is the label of the image is wrong ?</p>
             <form class="form-inline" method = "POST", action="http://localhost:8000/updateLabel">
+                <input type="hidden" name="image" value = "{{ results[0] }}"/>
                 <input type="text" name="new_label" placeholder="New label name" required />
-                <button type="submit" name="{{ current_label }}" class="btn btn-primary"> Update </button> 
+                <button type="submit" name="current_label" value = "{{ results[1] }}" class="btn btn-primary"> Update </button> 
             </form>
           </div>
-          {% endfor %}
         </div>
       </div><br>
       
