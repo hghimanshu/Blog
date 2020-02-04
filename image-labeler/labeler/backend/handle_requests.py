@@ -31,7 +31,6 @@ def getRequiredImages(label):
     if res.count() != 0:
         for i in res:
             image_name = i['image_path']
-            # image_name = i['image_path'].split('/')[-1]
             totalImages.append(image_name)
     return totalImages
 

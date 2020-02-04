@@ -51,7 +51,7 @@ def fetchImages():
             message = "No image is present in the database with the label " + str(label)
             return render_template('error.html', message = message)
         else:
-            data = [totalImages, label]
+            data = [totalImages[0], label]
             return render_template('show_images.html', results=data)
 
 
