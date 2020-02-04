@@ -14,15 +14,18 @@ from searchapp.backend.handle_requests import (isLabelInDb,
                                             updateInfo)
 
 
+STATIC_FOLDER = os.path.dirname(os.path.abspath(__file__))
+
+
 @app.route("/createLabels", methods=['GET', 'POST'])
 def createLabels():
     if flask.request.method == 'POST':
         image = flask.request.files['image']
         label = flask.request.form['label']
-        image.save(app.config['UPLOAD_FOLDER'] + secure_filename(image.filename))
-        full_path = app.config['UPLOAD_FOLDER'] + image.filename
+        image.save(STATIC_FOLDER + secure_filename(image.filename))
+        full_path = STATIC_FOLDER + image.filename
 
-        alreadyPresent = isLabelInDb(label, full_path)   
+        alreadyPresent = isLabelInDb(label, image.filename)   
         
         if alreadyPresent:
             message = "The label is already in the database. Try with other label"
