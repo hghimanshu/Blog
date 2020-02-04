@@ -14,7 +14,7 @@
           {% for img in results[0] %}
           <div class="col-sm-4">
             <div class="panel panel-primary">
-                <div class="panel-body"><img src=" {{ img }}" class="img-responsive" style="width:100%" alt="Image"></div>
+                <div class="panel-body"><img src=" {{ url_for('static', filename=img) }}" class="img-responsive" style="width:100%" alt="Image"></div>
             </div>
             <p> Is the image is of wrong label ?</p>
             <form class="form-inline" method = "POST", action="http://localhost:8000/updateLabel">
