@@ -6,14 +6,16 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 import os
+from math import ceil
+
 
 BATCH_SIZE = 32
 NUM_CLASSES = 10
 EPOCHS = 100
 AUGMENTATION = True
 
-SAVE_DIR = os.path.join(os.getcwd(), 'saved_models')
-MODEL_NAME = 'keras_cifar10_trained_model.h5'
+SAVE_DIR = os.path.join(os.getcwd(), 'model_weights')
+MODEL_NAME = 'docker_cifar10_model.h5'
 
 def create_folders(path):
     if not os.path.exists(path):
@@ -112,10 +114,12 @@ if __name__ == "__main__":
     x_train, x_test = scaling_the_data(x_train, x_test)
     image_shape = x_train.shape[1:]
     model = define_cnn_model(image_shape)
-    opt = keras.optimizers.RMSprop(learning_rate=0.0001, decay=1e-6)
+    opt = keras.optimizers.RMSprop(lr=0.0001, decay=1e-6)
     model.compile(loss='categorical_crossentropy',
               optimizer=opt,
               metrics=['accuracy'])
+
+    steps_per_epoch = ceil(x_train.shape[0] / (BATCH_SIZE * 4))
 
     if AUGMENTATION:
         print('Using real-time data augmentation.')
@@ -124,7 +128,8 @@ if __name__ == "__main__":
                                         batch_size=BATCH_SIZE),
                             epochs=EPOCHS,
                             validation_data=(x_test, y_test),
-                            workers=4)
+                            workers=4,
+                            steps_per_epoch=steps_per_epoch)
 
     else:
         print('Not using data augmentation.')
