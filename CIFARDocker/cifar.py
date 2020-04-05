@@ -18,7 +18,6 @@ MODEL_NAME = 'keras_cifar10_trained_model.h5'
 def create_folders(path):
     if not os.path.exists(path):
         os.makedirs(path)
-        
 
 def initialize_dataset():
     (x_train, y_train), (x_test, y_test) = cifar10.load_data()
@@ -43,7 +42,7 @@ def scaling_the_data(x_train, x_test):
 def define_cnn_model(image_shape):
     model = Sequential()
     model.add(Conv2D(32, (3, 3), padding='same',
-                    input_shape=x_train.shape[1:]))
+                    input_shape=image_shape))
     model.add(Activation('relu'))
     model.add(Conv2D(32, (3, 3)))
     model.add(Activation('relu'))
@@ -64,13 +63,7 @@ def define_cnn_model(image_shape):
     model.add(Dense(NUM_CLASSES))
     model.add(Activation('softmax'))
 
-
-opt = keras.optimizers.RMSprop(learning_rate=0.0001, decay=1e-6)
-
-
-model.compile(loss='categorical_crossentropy',
-              optimizer=opt,
-              metrics=['accuracy'])
+    return model
 
 
 def generating_augmentation(x_train):
@@ -100,22 +93,6 @@ def generating_augmentation(x_train):
     return datagen
 
 
-if not AUGMENTATION:
-    print('Not using data augmentation.')
-    model.fit(x_train, y_train,
-              batch_size=BATCH_SIZE,
-              epochs=EPOCHS,
-              validation_data=(x_test, y_test),
-              shuffle=True)
-else:
-    print('Using real-time data augmentation.')
-    model.fit_generator(datagen.flow(x_train, y_train,
-                                     batch_size=BATCH_SIZE),
-                        epochs=EPOCHS,
-                        validation_data=(x_test, y_test),
-                        workers=4)
-
-
 def save_model(model):
     model_path = os.path.join(SAVE_DIR, MODEL_NAME)
     model.save(model_path)
@@ -128,7 +105,36 @@ def evaluate_model(model):
     print('Test accuracy:', scores[1])
 
 
-if not os.path.isdir(SAVE_DIR):
-    os.makedirs(SAVE_DIR)
+if __name__ == "__main__":
+    
+    x_train, y_train, x_test, y_test = initialize_dataset()
+    y_train, y_test = converting_the_labels(y_train, y_test)
+    x_train, x_test = scaling_the_data(x_train, x_test)
+    image_shape = x_train.shape[1:]
+    model = define_cnn_model(image_shape)
+    opt = keras.optimizers.RMSprop(learning_rate=0.0001, decay=1e-6)
+    model.compile(loss='categorical_crossentropy',
+              optimizer=opt,
+              metrics=['accuracy'])
 
+    if AUGMENTATION:
+        print('Using real-time data augmentation.')
+        datagen = generating_augmentation(x_train)
+        model.fit_generator(datagen.flow(x_train, y_train,
+                                        batch_size=BATCH_SIZE),
+                            epochs=EPOCHS,
+                            validation_data=(x_test, y_test),
+                            workers=4)
 
+    else:
+        print('Not using data augmentation.')
+        model.fit(x_train, y_train,
+                batch_size=BATCH_SIZE,
+                epochs=EPOCHS,
+                validation_data=(x_test, y_test),
+                shuffle=True)
+    
+    create_folders(SAVE_DIR)
+
+    save_model(model)
+    evaluate_model(model)
