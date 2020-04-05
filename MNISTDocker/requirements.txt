@@ -1,0 +1,5 @@
+opencv-contrib-python
+pandas
+numpy
+keras
+tensorflow
