@@ -1,5 +1,9 @@
-FROM ubuntu:18.04
-MAINTAINER himanshu garg
+FROM python:3.8
+
+ENV PYTHONDONTWRITEBYTECODE 1
+
+ENV PYTHONUNBUFFERED 1
+
 RUN apt-get update -y && apt-get install -y python3-pip python3-dev libsm6 libxext6 libxrender-dev
 
 # addons
@@ -10,5 +14,7 @@ RUN \
     ffmpeg \
     git
 
-COPY . requirements.txt
-RUN pip3 install -r requirements.txt
+ADD requirements.txt .
+RUN python -m pip install -r requirements.txt
+
+WORKDIR /home/CIFARDocker/
