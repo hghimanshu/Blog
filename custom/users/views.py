@@ -1,49 +1,27 @@
 from django.shortcuts import render
 from .models import CustomUser
-# Create your views here.
-from django.contrib.auth import authenticate, login
-from rest_framework import generics,permissions, status
-from .serializers import CreateUserSerializer, LoginUserSerializer
-from rest_framework.response import Response
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
-from django.shortcuts import redirect
+from django.http import HttpResponse
+from .forms import registerUser
 
-class CreateUser(generics.GenericAPIView):
-
-    serializer_class = CreateUserSerializer
-
-    def post(self, request):
-        user = self.request.data
-        serializer = self.serializer_class(data=user)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+from .models import CustomUser
 
 
-        user_data = serializer.data
-        user = authenticate(self.request, username=user['email'], password=user['password'])
-        login(self.request, user)
-        return redirect('home_page')
+def createUser(request):
+    template_name = "users/register.html"
+    form = registerUser(request.POST or None)
+    context = {
+        'form': form
+    }
 
+    if form.is_valid():
 
-class LoginUser(generics.GenericAPIView):
-    queryset = CustomUser.objects.all()
-    serializer_class = LoginUserSerializer
+        email = form.cleaned_data.get('email')
+        password = form.cleaned_data.get('password')
+        name = form.cleaned_data.get('fullname')
 
-    def post(self, request):
-        user = self.request.data
-        already_authenticated = self.request.user.is_authenticated
+        info = {'email': email, 'password': password, 'fullname': name}
 
-        if already_authenticated:
-            return Response({"Already Logged In"}, status=status.HTTP_200_OK)
+        CustomUser.objects.create_user(**info)
+        context['form'] = registerUser()
 
-
-        incoming_email = user['email']
-        incoming_password = user['password']
-        serializer = self.serializer_class(data=user)
-
-        user = authenticate(self.request, username=incoming_email, password=incoming_password)
-        if user is not None:
-            login(self.request, user)
-            return redirect('home_page')
-        return Response({"Unable to login"}, status=status.HTTP_401_UNAUTHORIZED)
+    return render(request, template_name, context)

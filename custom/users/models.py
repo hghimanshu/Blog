@@ -13,7 +13,7 @@ class CustomUser(AbstractUser):
 
     objects = CustomUserManager()
 
-    name = models.CharField(blank=False, null=False, max_length=150)
+    fullname = models.CharField(blank=False, null=False, max_length=150)
     
     def __str__(self):
         return self.email
