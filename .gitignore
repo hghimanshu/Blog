@@ -6,3 +6,6 @@ __pycache__
 *.jpeg
 *.hd5
 *.h5
+migrations/
+*.sql
+db.sqlite3
