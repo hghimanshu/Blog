@@ -2,6 +2,8 @@ from typing import Any, Dict, Text, Union
 from fastapi import FastAPI
 from ray import serve
 import ray
+import genos
+import yaml
 from ray.serve.api import Deployment
 from deployment import ModelDeployment
 class Scaler:
@@ -64,8 +66,10 @@ app = FastAPI()
 
 @app.on_event("startup")
 async def startup_event():
-    scaler_obj = Scaler()
-    app.scaler = scaler_obj 
+    with open('configs/scaler_config.yml') as f:
+        config = yaml.safe_load(f)
+        scaler = genos.recursive_instantiate(config=config)
+    app.scaler = scaler
 
 
 @app.post("/scaleup")
