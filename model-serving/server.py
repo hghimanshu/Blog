@@ -21,7 +21,7 @@ class Scaler:
 
     
     def __check_if_replicas_are_correct(self, replicas: int):
-        if n < 0:
+        if replicas < 0:
             raise ValueError("Replica values must be positive !!")
 
     def model_loading(self, replicas: int) -> Dict[Text, Any]:
