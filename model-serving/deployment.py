@@ -20,12 +20,5 @@ class ModelDeployment:
     def __del__(self):
         pass
 
-    async def parse_message(self, data: str) -> Dict[Text, Any]:
+    async def parse_message(self, data: str) -> Union[None, str]:
         return await self.model_interpreter.model_parsing(data_path=Path(data))
-
-    async def __parse(self, request: Request) -> Dict[Text, Any]:
-        input_text = request.query_params["text"]
-        data = {"text": input_text}
-        result = await self.model_interpreter.parse(data=data)
-        final_result = {OUTPUT: result}
-        return final_result
