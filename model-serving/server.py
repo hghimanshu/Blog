@@ -1,6 +1,7 @@
 from typing import Any, Dict, Text, Union
 
 import genos
+from genos import get_class
 import ray
 import yaml
 from fastapi import FastAPI
@@ -11,10 +12,16 @@ from deployment import ModelDeployment
 
 
 class Scaler:
-    def __init__(self, model_dir: str, interpreter_class: type):
+    def __init__(self, model_dir: str, interpreter_class):
         self.model_dir = model_dir
         self.interpreter_class = interpreter_class
         self.model_name = "cifar"
+        try:
+            if not ray.is_initialized():
+                ray.init(address="auto", namespace="serve")
+        except Exception as e:
+            raise Exception(f"Ray setup failed in either in ray cluster {e}")
+
 
     def get_depoyment_if_exists(self) -> Union[Deployment, None]:
         try:
@@ -36,6 +43,7 @@ class Scaler:
         if deployment is None:
             ## deployment doesn't exists !!
             ## scaleup then 
+            print("deployment doesn't exists !!")
             ModelDeployment.options(
                 num_replicas=replicas,
                 route_prefix=f"/{self.model_name}",
@@ -60,7 +68,7 @@ class Scaler:
             deployment_handle = deployment.get_handle()
             try:
                 model_response = ray.get(deployment_handle.parse_message.remote(input_path))
-            except Exception:
+            except Exception as e:
                 model_response = "Something went wrong !!"
             response["message"] = model_response
         return response
