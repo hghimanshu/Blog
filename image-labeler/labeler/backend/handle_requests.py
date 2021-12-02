@@ -1,5 +1,5 @@
-from labeler.mongodb.mongo import (fetchData, insertData, 
-                                    groupingData, updateData)
+from labeler.mongodb.mongo import (fetchData, groupingData, insertData,
+                                   updateData)
 
 COLL = "Image-Data"
 

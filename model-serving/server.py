@@ -1,11 +1,15 @@
 from typing import Any, Dict, Text, Union
+
+import genos
+import ray
+import yaml
 from fastapi import FastAPI
 from ray import serve
-import ray
-import genos
-import yaml
 from ray.serve.api import Deployment
+
 from deployment import ModelDeployment
+
+
 class Scaler:
     def __init__(self, model_dir: str, interpreter_class: type):
         self.model_dir = model_dir

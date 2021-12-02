@@ -6,7 +6,9 @@ from ray import serve
 from ray.util.queue import Queue
 from starlette.requests import Request
 from starlette.responses import JSONResponse
+
 from cifar_interpreter import CIFARInterpreter
+
 
 @serve.deployment
 class ModelDeployment:

@@ -1,8 +1,8 @@
 from pathlib import Path
 from typing import Union
-from keras.models import load_model
-import cv2
 
+import cv2
+from keras.models import load_model
 
 CIFAR_CLASSES = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
 

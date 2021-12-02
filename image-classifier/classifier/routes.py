@@ -1,16 +1,18 @@
-from classifier import app
 import json
-import sys
 # sys.path.append('/home/techject/Abhishek/C3-python/')
 import os
-from werkzeug import secure_filename
-import flask
-import time
-import cv2
 import random
+import sys
+import time
+
+import flask
+from flask import render_template
+from werkzeug import secure_filename
+
+import cv2
 import keras
 import tensorflow as tf
-from flask import render_template
+from classifier import app
 from classifier.backend.prediction import image_prediction
 
 

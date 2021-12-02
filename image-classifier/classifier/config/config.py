@@ -1,5 +1,5 @@
 import os
-from os.path import join, dirname, realpath
+from os.path import dirname, join, realpath
 
 DEBUG = True
 WEIGHTS_FOLDER = join(dirname(realpath(__file__)), 'weights/') 

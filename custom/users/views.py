@@ -1,8 +1,7 @@
-from django.shortcuts import render
-from .models import CustomUser
 from django.http import HttpResponse
-from .forms import registerUser
+from django.shortcuts import render
 
+from .forms import registerUser
 from .models import CustomUser
 
 
