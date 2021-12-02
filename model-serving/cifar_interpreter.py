@@ -15,7 +15,7 @@ class CIFARInterpreter:
         if Path.exists(model_dir):
             self.model = load_model(model_dir)
 
-    async def model_parsing(self, data_path: Path) -> Union[None, str]:
+    async def model_parsing(self, data_path: str) -> Union[None, str]:
         prediction = None
         image = cv2.imread(data_path)
         image = cv2.resize(image, MODEL_INPUT_SIZE, interpolation= cv2.INTER_LINEAR)
