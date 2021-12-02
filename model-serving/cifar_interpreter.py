@@ -27,4 +27,3 @@ class CIFARInterpreter:
 
             prediction = CIFAR_CLASSES[index]
         return prediction
-

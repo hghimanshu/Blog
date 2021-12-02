@@ -63,36 +63,9 @@ class Scaler:
             except Exception:
                 model_response = "Something went wrong !!"
             response["message"] = model_response
-
-
-
-
-
-
         return response
 
 app = FastAPI()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 @app.on_event("startup")
