@@ -1,11 +1,8 @@
 import os
 from pathlib import Path
-from typing import Any, Dict, List, Text, Union
+from typing import Union
 
 from ray import serve
-from ray.util.queue import Queue
-from starlette.requests import Request
-from starlette.responses import JSONResponse
 
 from cifar_interpreter import CIFARInterpreter
 
@@ -13,7 +10,7 @@ from cifar_interpreter import CIFARInterpreter
 @serve.deployment
 class ModelDeployment:
     def __init__(self, model_path: str, interpreter_class: type) -> None:
-        self.model_interpreter: CIFARInterpreter = interpreter_class()
+        self.model_interpreter: CIFARInterpreter = interpreter_class
         self.model_path = model_path
         self.loaded = False
         if self.model_interpreter.model is None:
@@ -23,4 +20,4 @@ class ModelDeployment:
         pass
 
     async def parse_message(self, data: str) -> Union[None, str]:
-        return await self.model_interpreter.model_parsing(data_path=Path(data))
+        return await self.model_interpreter.model_parsing(data_path=data)
