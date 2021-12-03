@@ -19,5 +19,5 @@ class ModelDeployment:
     def __del__(self):
         pass
 
-    async def parse_message(self, data: str) -> Union[None, str]:
-        return await self.model_interpreter.model_parsing(data_path=data)
+    def parse_message(self, data: str) -> Union[None, str]:
+        return self.model_interpreter.model_parsing(data_path=data)
