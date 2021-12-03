@@ -1,5 +1,5 @@
 cls: "server.Scaler"
 params:
-  model_dir: "model.cifar10_model.h5"
+  model_dir: "model/cifar10_model.h5"
   interpreter_class: 
     cls: "cifar_interpreter.CIFARInterpreter"
