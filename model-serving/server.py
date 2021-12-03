@@ -69,6 +69,7 @@ class Scaler:
             try:
                 model_response = ray.get(deployment_handle.parse_message.remote(input_path))
             except Exception as e:
+                print(e)
                 model_response = "Something went wrong !!"
             response["message"] = model_response
         return response
