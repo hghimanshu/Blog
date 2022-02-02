@@ -1,4 +1,4 @@
-from classifier import app as  application
+from classifier import app as application
 from classifier import config
 
 application.config.from_object(config)    

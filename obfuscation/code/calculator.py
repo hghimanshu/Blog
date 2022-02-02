@@ -1,6 +1,8 @@
 import sys
-sys.path.append('../')
+
 from package import addition, differencce, multiply
+
+sys.path.append('../')
 
 
 def processValues(value1, value2):

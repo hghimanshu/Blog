@@ -1,10 +1,10 @@
-import keras
 import numpy as np
-import tensorflow as tf
+
 import cv2
+import keras
+import tensorflow as tf
+from keras.applications.vgg19 import VGG19, decode_predictions
 from keras.models import load_model
-from keras.applications.vgg19 import VGG19
-from keras.applications.vgg19 import decode_predictions
 
 
 def image_prediction(image):

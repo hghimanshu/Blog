@@ -1,7 +1,8 @@
-import pymongo
-from pymongo import MongoClient
 import sys
+
+import pymongo
 from labeler.config.settings import DB
+from pymongo import MongoClient
 
 
 class settingupDb:

@@ -1,4 +1,4 @@
-from labeler import app as  application
+from labeler import app as application
 from labeler import config
 
 application.config.from_object(config)    

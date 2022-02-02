@@ -14,4 +14,3 @@ class registerUser(forms.Form):
         if password != password2:
             raise forms.ValidationError("Passwords must match.")
         return data
-        

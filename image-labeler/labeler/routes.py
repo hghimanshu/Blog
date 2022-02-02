@@ -1,13 +1,13 @@
-from labeler import app
 import json
 import os
-from werkzeug import secure_filename
-import flask
-from flask import render_template 
-from labeler.backend.handle_requests import (isLabelInDb, 
-                                            getRequiredImages, getAllImages,
-                                            updateInfo)
 
+import flask
+from flask import render_template
+from werkzeug import secure_filename
+
+from labeler import app
+from labeler.backend.handle_requests import (getAllImages, getRequiredImages,
+                                             isLabelInDb, updateInfo)
 
 STATIC_FOLDER = os.path.dirname(os.path.abspath(__file__)) + '/static/'
 
