@@ -62,3 +62,16 @@ class LikesCreate(generics.CreateAPIView, mixins.DestroyModelMixin):
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
             raise ValidationError("There is nothing to delete here ..")
+
+
+class BlogDestroy(generics.RetrieveDestroyAPIView):
+    queryset = Blogs.objects.all()
+    serializer_class = GetBlogsSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def delete(self, request, *args, **kwargs):
+        post = Blogs.objects.filter(pk=kwargs['pk'], posted_by=self.request.user)
+        if post.exists():
+            return self.destroy(request, *args, **kwargs)
+        else:
+            raise ValidationError("You cannot delete other person's blog !!")
