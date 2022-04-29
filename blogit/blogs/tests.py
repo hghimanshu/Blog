@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db.utils import IntegrityError
-from django.test import TestCase
+from django.test import Client, TestCase
 
 from .models import Blogs, Likes
 from .serializers import AboutUserSerializer, GetBlogsSerializer, LikeSerializer
@@ -168,3 +168,166 @@ class BlogsTestSerializers(TestCase):
         ## checking the results
         self.assertEqual(list(serializer_data.keys()), ["id"])
         self.assertEqual(serializer_data.get("id"), likes.id)
+
+
+class BlogsTestViews(TestCase):
+    def setUp(self) -> None:
+        self.user = User.objects.create(username="test", email="test@mail.com")
+        self.user.is_staff = True
+        self.user.is_superuser = True
+        self.user.save()
+        self.client = Client()
+
+    def test_get_user_information_view(self) -> None:
+        user = self.user
+        self.client.force_login(user)
+
+        blog = Blogs.objects.create(
+            title="test title",
+            content="test-content",
+            posted_by=user,
+            tags="some random tags",
+        )
+
+        response = self.client.get("/blogs/users")
+        data = response.json()
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["username"], user.username)
+        self.assertEqual(data[0]["email"], user.email)
+        self.assertEqual(len(data[0]["blogs"]), 1)
+        self.assertIn(blog.title, data[0]["blogs"])
+
+        ## creating new user
+        User.objects.create(username="test1", email="test1@mail.com")
+
+        ## checking if the newly created user is coming from the api
+        response = self.client.get("/blogs/users")
+        data = response.json()
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(data), 2)
+
+    def test_blog_list(self) -> None:
+        user = self.user
+        self.client.force_login(user)
+
+        response = self.client.get("/blogs/")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), [])
+
+        blog = Blogs.objects.create(
+            title="test title",
+            content="test-content",
+            posted_by=user,
+            tags="some random tags",
+        )
+
+        response = self.client.get("/blogs/")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 1)
+        self.assertEqual(response.json()[0]["id"], blog.id)
+        self.assertEqual(response.json()[0]["title"], blog.title)
+        self.assertEqual(response.json()[0]["author"], blog.posted_by.username)
+
+    def test_blog_update(self) -> None:
+        user = self.user
+        self.client.force_login(user)
+
+        blog = Blogs.objects.create(
+            title="test title",
+            content="test-content",
+            posted_by=user,
+            tags="some random tags",
+        )
+
+        pk = blog.id
+
+        params = {"title": "new title", "content": "updated content"}
+        response = self.client.put(
+            f"/blogs/{pk}", data=params, content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["id"], pk)
+        self.assertEqual(response.json()["title"], params["title"])
+        self.assertEqual(response.json()["content"], params["content"])
+
+        ## creating new user
+        new_user = User.objects.create(username="test1", email="test1@mail.com")
+        blog = Blogs.objects.create(
+            title="test title",
+            content="test-content",
+            posted_by=new_user,
+            tags="some random tags",
+        )
+
+        pk = blog.id
+
+        response = self.client.put(
+            f"/blogs/{pk}", data=params, content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), ["You cannot update other person's post !!"])
+
+    def test_likes_created(self) -> None:
+        user = self.user
+        self.client.force_login(user)
+
+        blog = Blogs.objects.create(
+            title="test title",
+            content="test-content",
+            posted_by=user,
+            tags="some random tags",
+        )
+
+        pk = blog.id
+
+        response = self.client.post(f"/blogs/{pk}/like")
+        self.assertEqual(response.status_code, 201)
+        self.assertIn("id", response.json())
+
+        ## liking the same post again
+        response = self.client.post(f"/blogs/{pk}/like")
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), ["You have already voted for this post !!"])
+
+        ## deleting the like
+        response = self.client.delete(f"/blogs/{pk}/like")
+        self.assertEqual(response.status_code, 204)
+
+        ## deleting the like again
+        response = self.client.delete(f"/blogs/{pk}/like")
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), ["There is nothing to delete here .."])
+
+    def test_blog_destroy(self) -> None:
+        user = self.user
+        self.client.force_login(user)
+
+        blog = Blogs.objects.create(
+            title="test title",
+            content="test-content",
+            posted_by=user,
+            tags="some random tags",
+        )
+
+        pk = blog.id
+
+        ## deleting the blog
+        response = self.client.delete(f"/blogs/{pk}/delete")
+        self.assertEqual(response.status_code, 204)
+
+        ## creating new user
+        new_user = User.objects.create(username="test1", email="test1@mail.com")
+        blog = Blogs.objects.create(
+            title="test title",
+            content="test-content",
+            posted_by=new_user,
+            tags="some random tags",
+        )
+
+        pk = blog.id
+
+        ## deleting the blog of other person
+        response = self.client.delete(f"/blogs/{pk}/delete")
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), ["You cannot delete other person's blog !!"])
