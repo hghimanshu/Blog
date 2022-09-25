@@ -64,22 +64,25 @@ jobs:
             
       - run:
           name: Monitor docker logs
-          command: docker-compose logs -f
+          command: cd blogit && docker-compose logs -f
           background: true
 
       - run:
           name: Install packages
           command: |
+            cd blogit &&
             docker-compose exec -T blog pip install -r requirements.txt
 
       - run:
           name: Migrate the Django project
           command: |
+            cd blogit &&
             docker-compose exec -T blog python manage.py migrate
 
       - run:
           name: Testing in app container
           command: |
+            cd blogit &&
             docker-compose exec -T blog python manage.py test
 
 
