@@ -51,12 +51,9 @@ jobs:
           command: echo "export PATH=$PATH:/home/circleci/.local/bin" >> $BASH_ENV
 
       - run:
-          name: Changing path dir
-          command: cd blogit
-
-      - run:
           name: Build Docker Image
           command: |
+            cd blogit && 
             DOCKER_BUILDKIT=1  docker build -t "blogs-docker:latest" .
             
       - run:

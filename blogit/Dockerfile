@@ -9,7 +9,7 @@ RUN apt-get update \
         git \
         vim
 
-ADD ./blogit/ src/
+ADD ./ src/
 WORKDIR /src
 
 RUN pip install pip==22.1.2
