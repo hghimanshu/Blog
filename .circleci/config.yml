@@ -59,6 +59,7 @@ jobs:
       - run:
           name: Start all containers
           command: |
+            cd blogit &&
             docker-compose up -d sql blog
             
       - run:
