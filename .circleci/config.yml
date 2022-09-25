@@ -34,7 +34,7 @@ jobs:
 
   
   test-blog:
-    working_directory: ~/workdir/blogit/
+    working_directory: ~/workdir/
     docker:
       - image: circleci/python:3.7.7
 
