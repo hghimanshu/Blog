@@ -49,7 +49,11 @@ jobs:
       - run:
           name: BASH_ENV PATH
           command: echo "export PATH=$PATH:/home/circleci/.local/bin" >> $BASH_ENV
-      
+
+      - run:
+          name: Changing path dir
+          command: cd blogit
+
       - run:
           name: Build Docker Image
           command: |
