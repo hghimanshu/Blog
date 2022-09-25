@@ -68,12 +68,12 @@ jobs:
       - run:
           name: Install packages
           command: |
-            docker-compose exec -T app blog pip install -r requirements.txt
+            docker-compose exec -T blog pip install -r requirements.txt
 
       - run:
           name: Migrate the Django project
           command: |
-            docker-compose exec -T app blog python manage.py migrate
+            docker-compose exec -T blog python manage.py migrate
 
       - run:
           name: Testing in app container
