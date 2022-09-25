@@ -1,0 +1,107 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@0.2.1
+
+##################
+# Job Definitions
+##################
+jobs:
+  prepare-system:
+    working_directory: ~/workdir/
+    docker:
+      - image: circleci/python:3.7.7
+
+    steps:
+      - checkout
+
+      - run:
+          name: BASH_ENV PATH
+          command: echo "export PATH=$PATH:/home/circleci/.local/bin" >> $BASH_ENV
+
+      - run:
+          name: Install Docker Compose
+          command: |
+            curl -L https://github.com/docker/compose/releases/download/1.25.3/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+            chmod +x ~/docker-compose
+            sudo mv ~/docker-compose ~/workdir/docker-compose
+
+      - persist_to_workspace:
+          root: /home/circleci
+          paths:
+            - workdir
+            - .local
+
+  
+  test-blog:
+    working_directory: ~/workdir/
+    docker:
+      - image: circleci/python:3.7.7
+
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.11
+          docker_layer_caching: true
+      - attach_workspace:
+          at: /home/circleci
+
+      - run:
+          name: BASH_ENV PATH
+          command: echo "export PATH=$PATH:/home/circleci/.local/bin" >> $BASH_ENV
+
+      - run:
+          name: Build Docker Image
+          command: |
+            cd blogit && 
+            DOCKER_BUILDKIT=1  docker build -t "blogs-docker:latest" .
+            
+      - run:
+          name: Start all containers
+          command: |
+            cd blogit &&
+            docker-compose up -d sql blog
+            
+      - run:
+          name: Monitor docker logs
+          command: cd blogit && docker-compose logs -f
+          background: true
+
+      - run:
+          name: Install packages
+          command: |
+            cd blogit &&
+            docker-compose exec -T blog pip install -r requirements.txt
+
+      - run:
+          name: Migrate the Django project
+          command: |
+            cd blogit &&
+            docker-compose exec -T blog python manage.py migrate
+
+      - run:
+          name: Testing in app container
+          command: |
+            cd blogit &&
+            docker-compose exec -T blog python manage.py test
+
+
+
+############
+# Workflows
+############
+
+workflows:
+  version: 2
+  build_test:
+    jobs:
+      - prepare-system:
+          filters:
+            branches:
+              only: /.*/
+      - test-blog:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - prepare-system
